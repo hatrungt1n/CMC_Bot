@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/hatrungt1n/Bot_CMC#readme",
   "dependencies": {
-    "dotenv": "^16.0.0"
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.0",
+    "node-telegram-bot-api": "^0.57.0"
   }
 }
