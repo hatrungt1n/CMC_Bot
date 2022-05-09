@@ -1,7 +1,7 @@
 import axios from "axios";
 // Load the Telegram API library
 import TelegramBot from "node-telegram-bot-api";
-import 'dotenv/config'
+import "dotenv/config";
 
 const LIMIT_NUMBER_OF_COIN = 1;
 const API_CMC = `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=${LIMIT_NUMBER_OF_COIN}&sort=date_added&sort_dir=desc`;
@@ -30,21 +30,20 @@ new Promise(async (resolve, reject) => {
   if (response) {
     // success
     const jsons = response.data.data;
-    const data = {
-      Name: jsons[0].name,
-      Symbol: jsons[0].symbol,
-      Max_supply: jsons[0].max_supply,
-      Total_supply: jsons[0].total_supply,
-      Platform: jsons[0].platform.name,
-      Token_address: jsons[0].platform.token_address,
-    };
+    const data = `
+      Name: "${jsons[0].name}",
+Symbol: ${jsons[0].symbol},
+Max Supply: ${jsons[0].max_supply},
+Total Supply: ${jsons[0].total_supply},
+Platform: ${jsons[0].platform?.name || "No Data"},
+Address: ${jsons[0].platform?.token_address || "No Data"}
+`;
     resolve(jsons);
 
     // Create an /newCoin command in telegram
-    bot.onText(/\/command1/, function (msg) {
+    bot.onText(/\/newCoin/, function (msg) {
       console.log("Received an request");
-      const message = JSON.stringify(data,null,'\t')
-      bot.sendMessage(msg.chat.id, message);
+      bot.sendMessage(msg.chat.id, data);
       console.log("Sent the request successfully");
     });
   }
